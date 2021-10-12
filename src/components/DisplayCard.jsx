@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useContext, useState} from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -8,19 +8,28 @@ import { CardActionArea, Grid } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useHistory } from "react-router-dom";
+import { centralContext } from "../contexts/CentralContextProvider";
+import ConfirmationModal from "./ConfirmationModal";
 
 
 export default function DisplayCard(props) {
   const { asset } = props;
   const history= useHistory()
+  const {deleteAsset} =useContext(centralContext)
   const [displayButtons, setDisplayButtons] = useState(false);
+  const [open, setOpen] = React.useState(false);
+
   const goToAssetInfoDisplay=(id)=>{
       history.push(`/asset/${id}`)
   }
   const goToEditScreen=(id)=>{
     history.push(`/asset/edit/${id}`)
   }
+  const deleteHandler=()=>{
+    deleteAsset(asset.id)
+  }
   return (
+    <>
     <Card>
       <CardActionArea
       onMouseEnter={()=>setDisplayButtons(true)}
@@ -49,7 +58,7 @@ export default function DisplayCard(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <Button size="small">
-                    <DeleteIcon fontSize="small" color="primary" />
+                    <DeleteIcon onClick={()=>setOpen(true)} fontSize="small" color="primary" />
                   </Button>
                 </Grid>
               </>
@@ -58,5 +67,7 @@ export default function DisplayCard(props) {
         </CardContent>
       </CardActionArea>
     </Card>
+    <ConfirmationModal open={open} setOpen={setOpen} agreeFunction={deleteHandler} />
+    </>
   );
 }

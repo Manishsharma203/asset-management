@@ -9,8 +9,13 @@ import EditForm from "../components/EditForm";
 export default function EditAssetInfo() {
   const params = useParams();
   const history = useHistory();
-  const { fetchAssetById } = useContext(centralContext);
-  const [assetData, setAssetData] = useState({});
+  const { fetchAssetById, data, setData,saveAsset } = useContext(centralContext);
+  const [assetData, setAssetData] = useState({
+    title: "",
+    description: "",
+    imageURL: "",
+    uploadedBy: "",
+  });
   useEffect(() => {
     fetchAssetById(params.assetId)
       .then((info) => setAssetData(info))
@@ -18,6 +23,23 @@ export default function EditAssetInfo() {
   }, []);
   const backToDashboard = () => {
     history.push("/");
+  };
+  // const saveAsset = () => {
+  //   console.log("saveAsset", assetData);
+  //   if (assetData.title && assetData.imageURL) {
+  //     const copyData = [...data];
+  //     const result=copyData.map((ele) =>ele.id===params.assetId?{...ele,...assetData}:ele)
+  //     console.log('result',result)
+  //     setData(result);
+  //   } else {
+  //     alert("Title cannot be empty");
+  //   }
+  // };
+  const uploadImage = () => {
+    setAssetData((prev) => ({
+      ...prev,
+      imageURL: "https://source.unsplash.com/random/100x100",
+    }));
   };
   return (
     <Box sx={{ marginTop: "5px" }}>
@@ -56,20 +78,34 @@ export default function EditAssetInfo() {
             padding: "20px",
           }}
         >
-          <EditForm assetData={assetData} />
+          <EditForm assetData={assetData} setAssetData={setAssetData} />
         </Box>
-        <CardMedia
-          component="img"
-          sx={{ width: 10, flexGrow: 1 }}
-          image={assetData.imageURL}
-          alt="asset image"
-        />
+        <Box sx={{ width: 10, flexGrow: 1 }}>
+          <CardMedia
+            component="img"
+            height="90%"
+            image={assetData.imageURL}
+            alt="asset image"
+          />
+          <input
+            accept="image/*"
+            type="file"
+            id="image"
+            name="imageURL"
+            onChange={uploadImage}
+          />
+        </Box>
       </Card>
       <Box
         component="div"
         sx={{ display: "flex", justifyContent: "center", padding: "5px" }}
       >
-        <Button variant="contained" color="primary" size="small">
+        <Button
+          onClick={()=>saveAsset(params.assetId,assetData)}
+          variant="contained"
+          color="primary"
+          size="small"
+        >
           Save
         </Button>
       </Box>

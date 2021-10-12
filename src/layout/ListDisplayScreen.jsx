@@ -6,18 +6,22 @@ import DisplayCard from "../components/DisplayCard";
 export default function ListDisplayScreen() {
   const { fetchingAllAssets, data } = useContext(centralContext);
   useEffect(() => {
-    fetchingAllAssets();
+    if (data.length === 0) {
+      fetchingAllAssets();
+    }
   }, []);
   if (data.length === 0) {
     return <h1>Loading...</h1>;
   }
   return (
-      <Grid container spacing={2} sx={{marginTop:'5px'}}>
-        {data.map((asset) => (
+    <Grid container spacing={2} sx={{ marginTop: "5px" }}>
+      {data
+        .sort((a, b) => a.id - b.id)
+        .map((asset) => (
           <Grid key={asset.id} item xs={3}>
-            <DisplayCard asset={asset}/>
+            <DisplayCard asset={asset} />
           </Grid>
         ))}
-      </Grid>
+    </Grid>
   );
 }
