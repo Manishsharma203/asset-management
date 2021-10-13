@@ -16,7 +16,7 @@ export default function CommentSection(props) {
       sx={{ width: "70%", margin: "auto", marginTop: "10px" }}
     >
       {comments.map((commentInfo) => (
-        <Grid item>
+        <Grid item key={commentInfo.id}>
           <Grid container>
             <Grid item xs={12}>
               <Grid display="flex" alignItems="center">

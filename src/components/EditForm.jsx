@@ -7,21 +7,21 @@ import "react-quill/dist/quill.snow.css";
 export default function EditForm(props) {
   const { assetData, setAssetData } = props;
   const [descriptionValue, setDescriptionValue] = useState("");
-  useEffect(()=>{
-    if(assetData.description){
-      setDescriptionValue(assetData.description)
+  useEffect(() => {
+    if (assetData.description) {
+      setDescriptionValue(assetData.description);
     }
-  },[assetData.description])
+  }, [assetData.description]);
 
-  useEffect(()=>{
-    setAssetData(prev=>({...prev,description:descriptionValue}))
-  },[descriptionValue])
+  useEffect(() => {
+    setAssetData((prev) => ({ ...prev, description: descriptionValue }));
+  }, [descriptionValue]);
 
   const changeHandler = (event) => {
     // console.log("changeHandler", event.target.name, event.target.value);
-    const name=event.target.name
-    const value=event.target.value
-    setAssetData(prev=>({...prev,[name]:value}))
+    const name = event.target.name;
+    const value = event.target.value;
+    setAssetData((prev) => ({ ...prev, [name]: value }));
   };
   return (
     <Box component="form" autoComplete="off">
@@ -38,7 +38,7 @@ export default function EditForm(props) {
             defaultValue={assetData.title}
             onChange={changeHandler}
           />
-          <label style={{marginTop:'5px'}}>
+          <label style={{ marginTop: "5px" }}>
             <em>Description</em>
           </label>
           <ReactQuill
@@ -52,7 +52,7 @@ export default function EditForm(props) {
             id="outlined-required"
             label="Uploaded by"
             margin="normal"
-            name='uploadedBy'
+            name="uploadedBy"
             defaultValue={assetData.uploadedBy}
             onChange={changeHandler}
           />

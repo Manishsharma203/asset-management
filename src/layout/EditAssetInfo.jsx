@@ -5,11 +5,13 @@ import { Box } from "@mui/system";
 import { Button, Typography, Card, CardMedia } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import EditForm from "../components/EditForm";
+import PopUp from "../components/PopUp";
 
 export default function EditAssetInfo() {
   const params = useParams();
   const history = useHistory();
-  const { fetchAssetById, data, setData,saveAsset } = useContext(centralContext);
+  const { fetchAssetById, data, setData, saveAsset, popUpOpen, setPopUpOpen } =
+    useContext(centralContext);
   const [assetData, setAssetData] = useState({
     title: "",
     description: "",
@@ -24,17 +26,6 @@ export default function EditAssetInfo() {
   const backToDashboard = () => {
     history.push("/");
   };
-  // const saveAsset = () => {
-  //   console.log("saveAsset", assetData);
-  //   if (assetData.title && assetData.imageURL) {
-  //     const copyData = [...data];
-  //     const result=copyData.map((ele) =>ele.id===params.assetId?{...ele,...assetData}:ele)
-  //     console.log('result',result)
-  //     setData(result);
-  //   } else {
-  //     alert("Title cannot be empty");
-  //   }
-  // };
   const uploadImage = () => {
     setAssetData((prev) => ({
       ...prev,
@@ -101,7 +92,7 @@ export default function EditAssetInfo() {
         sx={{ display: "flex", justifyContent: "center", padding: "5px" }}
       >
         <Button
-          onClick={()=>saveAsset(params.assetId,assetData)}
+          onClick={() => saveAsset(params.assetId, assetData)}
           variant="contained"
           color="primary"
           size="small"
@@ -109,6 +100,7 @@ export default function EditAssetInfo() {
           Save
         </Button>
       </Box>
+      <PopUp open={popUpOpen} setOpen={setPopUpOpen} />
     </Box>
   );
 }

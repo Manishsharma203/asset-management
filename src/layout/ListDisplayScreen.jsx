@@ -2,9 +2,11 @@ import { Grid } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { centralContext } from "../contexts/CentralContextProvider";
 import DisplayCard from "../components/DisplayCard";
+import PopUp from "../components/PopUp";
 
 export default function ListDisplayScreen() {
-  const { fetchingAllAssets, data } = useContext(centralContext);
+  const { fetchingAllAssets, data, popUpOpen, setPopUpOpen } =
+    useContext(centralContext);
   useEffect(() => {
     if (data.length === 0) {
       fetchingAllAssets();
@@ -22,6 +24,7 @@ export default function ListDisplayScreen() {
             <DisplayCard asset={asset} />
           </Grid>
         ))}
+      <PopUp open={popUpOpen} setOpen={setPopUpOpen} />
     </Grid>
   );
 }

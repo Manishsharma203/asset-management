@@ -6,7 +6,9 @@ export const centralContext = createContext({
   setData: () => {},
   fetchAssetById: () => {},
   saveAsset: () => {},
-  deleteAsset:()=>{}
+  deleteAsset: () => {},
+  popUpOpen: false,
+  setPopUpOpen: () => {},
 });
 
 const { Provider } = centralContext;
@@ -14,6 +16,7 @@ const { Provider } = centralContext;
 export default function CentralContextProvider(props) {
   const { children } = props;
   const [data, setData] = useState([]);
+  const [popUpOpen, setPopUpOpen] = useState(false);
   const fetchingAllAssets = async () => {
     try {
       const response = await fetch(
@@ -45,6 +48,8 @@ export default function CentralContextProvider(props) {
       );
       console.log("result", result);
       setData(result);
+      setPopUpOpen(true);
+      setTimeout(() => setPopUpOpen(false), 1000);
     } else {
       alert("Title cannot be empty");
     }
@@ -54,10 +59,21 @@ export default function CentralContextProvider(props) {
     const result = copyData.filter((ele) => ele.id !== id);
     console.log("result", result);
     setData(result);
+    setPopUpOpen(true);
+    setTimeout(() => setPopUpOpen(false), 1000);
   };
   return (
     <Provider
-      value={{ data, fetchingAllAssets, setData, fetchAssetById, saveAsset,deleteAsset }}
+      value={{
+        data,
+        fetchingAllAssets,
+        setData,
+        fetchAssetById,
+        saveAsset,
+        deleteAsset,
+        popUpOpen,
+        setPopUpOpen,
+      }}
     >
       {children}
     </Provider>
